@@ -1,0 +1,92 @@
+#include<bits/stdc++.h>
+using namespace std;
+class Graph{
+   int V; //no of vertices
+   list<int> *adj; //Pointer to an array containing adjacency list
+  
+    public:
+    Graph(int V);
+    void addEdge(int u,int v);
+   void toplogical();
+    
+};
+
+Graph::Graph(int V)
+{
+    this->V=V;
+    adj=new list<int>[V];
+}
+void Graph::addEdge(int u,int v)
+{
+    adj[u].push_back(v);
+  
+}
+
+  
+void Graph::toplogical()
+{
+     
+  std::vector<int> in_deg(V,0) ;
+  
+  list<int>::iterator it;
+  for(int i=0;i<V;i++)
+  {
+   for(auto itr:adj[i])
+   {
+    in_deg[itr]++;
+   }
+ 
+  }
+  
+  std::queue<int>q ;
+  for(int i=0;i<V;i++)
+  {
+      if(in_deg[i]==0)
+      {
+      q.push(i);
+
+      }
+  }
+  vector<int> out;
+  int count=0;
+  while(!q.empty())
+  {
+      int x=q.front();
+      q.pop();
+      out.push_back(x);
+     for(auto &i:adj[x])
+    {
+        
+     if(--in_deg[i]==0)
+      q.push(i);
+    }
+ 
+  count++;
+  
+    }
+
+    if(V!=count)
+    {
+        cout<<"Graph contains a cycle toplogical sort not possible";
+        return;
+    }
+    cout<<"Toplogical Sort of graph:\n";
+    for(auto &i:out)
+    {
+        cout<<i<<" ";
+    }
+}
+    
+int main()
+{
+   Graph g(6); 
+    g.addEdge(5, 2); 
+    g.addEdge(5, 0); 
+    g.addEdge(4, 0); 
+    g.addEdge(4, 1); 
+    g.addEdge(2, 3); 
+    g.addEdge(3, 1); 
+    g.toplogical();
+     
+      return 0;
+}
