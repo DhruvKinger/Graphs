@@ -1,0 +1,78 @@
+#include<bits/stdc++.h>
+using namespace std;
+class Graph{
+   int V; //no of vertices
+   list<int> *adj; //Pointer to an array containing adjacency list
+    public:
+    Graph(int V);
+    void addEdge(int u,int v);
+    bool isCycle();
+    
+};
+
+Graph::Graph(int V)
+{
+    this->V=V;
+    adj=new list<int>[V];
+}
+void Graph::addEdge(int u,int v)
+{
+    adj[u].push_back(v);
+    
+    
+}
+
+bool Graph::isCycle()
+{
+   std::vector<int> in_deg(V,0); //vector storing indegrees of all vertices. Initialize all indegrees as 0. 
+  vector<int> output;
+  list<int>::iterator itr;
+    for(int u=0;u<V;u++)
+    {
+        for(auto v:adj[u]) // Traverse adjacency lists to fill indegrees of vertices.
+    
+        in_deg[v]++;
+    }
+    
+    std::queue<int> q ;
+    for(int i=0;i<V;i++)
+    {
+        if(in_deg[i]==0)
+        q.push(i);
+    }
+    
+    int count=0; //visited nodes
+    
+    while(!q.empty())
+    {
+        int x=q.front();
+        q.pop(); //deque front and put it in output vector
+        output.push_back(x);
+        
+        for(itr=adj[x].begin();itr!=adj[x].end();itr++)
+      {  
+        if(-- in_deg[*itr]==0)
+        q.push(*itr);
+      }
+      count++;
+    }
+    if(count!=V)
+    {
+        return true; //check if there was a cycle
+    }
+    else{
+        return false;
+    }
+}
+int main()
+{
+    Graph g(6);
+    g.addEdge(0, 1); 
+    g.addEdge(1, 2); 
+    g.addEdge(2, 0); 
+    g.addEdge(3, 4); 
+    g.addEdge(4, 5); 
+    (g.isCycle())?cout<<"Yes it has a cycle":cout<<"No cycle, present";
+  
+      return 0;
+}
