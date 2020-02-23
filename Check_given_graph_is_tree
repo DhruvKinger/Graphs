@@ -1,0 +1,91 @@
+#include <bits/stdc++.h> 
+using namespace std; 
+class Graph{
+    
+    int V; // No. of vertices 
+    list<int> *adj; // Pointer to an array containing adjacency lists 
+    bool isCyclic(int v,bool visited[],int parent);  // returns true if there is a cycle 
+    
+    public:
+    void addedge(int u,int v);
+    bool Istree();
+    Graph(int V); //constructor
+    
+};
+
+Graph::Graph(int V)
+{
+    this->V=V;
+    adj=new list<int>[V];
+}
+
+void Graph::addedge(int u,int v)
+{
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+}
+
+
+bool Graph::isCyclic(int v,bool visited[],int parent)
+{
+    visited[v]=true;
+    list<int>::iterator i;
+    for(i=adj[v].begin();i!=adj[v].end();i++)
+    {
+        if(!visited[*i])
+        {
+            if(isCyclic(*i,visited,v))// If an adjacent is not visited, then recur for that adjacent   
+            return true;
+        }
+        
+        else if(*i!=parent)
+        {
+            return true; // If an adjacent is visited and not parent of current vertex,then there is a cycle. 
+        }
+    }
+    return false;
+}
+
+bool Graph::Istree()
+{
+    bool *visited=new bool[V];
+    for(int i=0;i<V;i++)
+    {
+        visited[i]=false;
+    }
+    
+    if(isCyclic(0,visited,-1))
+    {
+        return false; // if condition works if there is a cycle in a graph
+    }
+    for(int u=0;u<V;u++)
+    {
+        if(!visited[u])
+        return false;  // If we find a vertex which is not reachable from 0 
+    }
+    
+    return true; // returns if given graph is a tree
+}
+
+int main()
+{
+Graph g(5);
+g.addedge(1,0);
+g.addedge(0,2);
+g.addedge(0,3);
+g.addedge(3,4);
+g.Istree()? cout << "Graph is Tree\n": 
+                 cout << "Graph is not Tree\n";
+                 
+    Graph g2(5); 
+    g2.addedge(1, 0); 
+    g2.addedge(0, 2); 
+    g2.addedge(2, 1); 
+    g2.addedge(0, 3); 
+    g2.addedge(3, 4); 
+    g2.Istree()? cout << "Graph is Tree\n": 
+                 cout << "Graph is not Tree\n"; 
+
+
+  return 0;
+}
