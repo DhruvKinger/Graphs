@@ -1,0 +1,66 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph
+{
+    int V;
+    list<int> *adj;
+   void dfs(bool visited[],int v);
+    public:
+    Graph(int V);
+    void addEdge(int v,int w);
+    int count_nonreach(int v);
+};
+Graph::Graph(int V)
+{
+    this->V=V;
+    adj=new list<int>[V];
+}
+void Graph::dfs(bool visited[],int v)
+{
+    visited[v]=true;
+    for(auto itr:adj[v])
+    {
+        if(!visited[itr])
+        dfs(visited,itr);
+    }
+    
+}
+
+void Graph::addEdge(int v,int w)
+{
+adj[v].push_back(w);
+adj[w].push_back(v);
+}
+
+int Graph::count_nonreach(int v)
+{
+bool *visited=new bool[V];
+for(int i=0;i<V;i++)
+{
+    visited[i]=false;
+}
+dfs(visited,v);  // to print DFS traversal 
+
+int c=0;
+for(int v=0;v<V;v++)
+{
+    if(visited[v]==false)
+    c++;
+}
+    return c;
+}
+
+int main()
+{
+ Graph g(8); 
+    g.addEdge(0, 1); 
+    g.addEdge(0, 2); 
+    g.addEdge(1, 2); 
+    g.addEdge(3, 4); 
+    g.addEdge(4, 5); 
+    g.addEdge(6, 7); 
+    cout<<"Number of non reachable nodes are :"<<g.count_nonreach(2);
+        return 0; 
+} 
