@@ -1,0 +1,70 @@
+#include <iostream>
+using namespace std;
+#include<bits/stdc++.h>
+class Graph
+{
+   
+    list<int> *adj;
+    public:
+     int V;
+    Graph(int V);
+    void addEdge(int v,int w);
+    bool bipartite(int v,bool visited[],int color[]);
+};
+
+Graph::Graph(int V)
+{
+    this->V=V;
+    adj=new list<int>[V];
+}
+
+void Graph::addEdge(int v,int w)
+{
+adj[v].push_back(w);
+adj[w].push_back(v);
+
+}
+
+bool Graph::bipartite(int v,bool visited[],int color[])
+{
+    
+    for (auto i : adj[v] ) {
+        if(visited[i]==false)
+        {
+          visited[i]=true;
+          color[i]=!color[v];
+          if(!bipartite(i,visited,color))
+          return false;
+        }
+        else if(color[i]==color[v])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main()
+{
+    int V;
+    Graph g(6);
+    g.addEdge(1, 2); 
+	g.addEdge(2, 3); 
+	g.addEdge(3, 4); 
+	g.addEdge(4, 5); 
+	g.addEdge(5, 6); 
+	g.addEdge(6, 1);
+	bool *visited=new bool[V];
+	visited[1]=true;
+	int *color=new int[V];
+	color[1] = 0; 
+	if(g.bipartite(1,visited,color)
+	{
+	    cout << "Graph is bipartite\n": 
+        }
+        else
+        {
+            cout << "Graph is not bipartite\n"; 
+
+        }
+}
