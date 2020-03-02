@@ -1,13 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define V 4
-bool bipartite(int G[][V],int src)
+bool bipartite_util(int G[][V],int src,int color[])
 {
-    int color[V];
-    for(int i=0;i<V;i++)
-    {
-        color[i]=-1;
-    }
+    
     color[src]=1;
     
     std::queue<int> q ;
@@ -18,7 +14,7 @@ bool bipartite(int G[][V],int src)
         int u=q.front();
         q.pop();
         
-        if(G[u][u]=1)
+        if(G[u][u]==1)
         {
             return false;
         }
@@ -31,20 +27,38 @@ bool bipartite(int G[][V],int src)
                 q.push(v);
             }
             
-            else if(G[u][v] && color[u]==color[v])
+            else if(G[u][v] && color[v]==color[u])
               return false;
         }
     }
     return true;
 }
 
+bool bipartite(int G[][V])
+{
+    int color[V];
+    for(int i=0;i<V;i++)
+    {
+        color[i]=-1;
+    }
+    for(int i=0;i<V;i++)
+    {
+        if(color[i]==-1)
+         if(bipartite_util(G,i,color)==false)
+          return false;
+    }
+    
+    return true;
+}
+
 int main()
 {
     //int V=4;
-    int G[][V]={{0,1,0,1},
+    int G[][V]={
+        {0,1,0,1},
         {1,0,1,0},{0,1,0,1},{1,0,1,0}
     };
-    bipartite(G,0)?std::cout << "Yes":cout << "no";
+    bipartite(G)?std::cout << "Yes it is a bipartitie graph":cout << "Nope";
     
         
 }
