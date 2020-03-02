@@ -1,44 +1,38 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
-#include<bits/stdc++.h>
-class Graph
+#define V 4
+bool bipartite(int G[][V],int src)
 {
-   
-    list<int> *adj;
-    public:
-     int V;
-    Graph(int V);
-    void addEdge(int v,int w);
-    bool bipartite(int v,bool visited[],int color[]);
-};
-
-Graph::Graph(int V)
-{
-    this->V=V;
-    adj=new list<int>[V];
-}
-
-void Graph::addEdge(int v,int w)
-{
-adj[v].push_back(w);
-adj[w].push_back(v);
-
-}
-
-bool Graph::bipartite(int v,bool visited[],int color[])
-{
+    int color[V];
+    for(int i=0;i<V;i++)
+    {
+        color[i]=-1;
+    }
+    color[src]=1;
     
-    for (auto i : adj[v] ) {
-        if(visited[i]==false)
-        {
-          visited[i]=true;
-          color[i]=!color[v];
-          if(!bipartite(i,visited,color))
-          return false;
-        }
-        else if(color[i]==color[v])
+    std::queue<int> q ;
+    q.push(src);
+    
+    while(!q.empty())
+    {
+        int u=q.front();
+        q.pop();
+        
+        if(G[u][u]=1)
         {
             return false;
+        }
+        
+        for(int v=0;v<V;v++)
+        {
+            if(G[u][v] && color[v]==-1)
+            {
+                color[v]=1-color[u];
+                q.push(v);
+            }
+            
+            else if(G[u][v] && color[u]==color[v])
+              return false;
         }
     }
     return true;
@@ -46,25 +40,11 @@ bool Graph::bipartite(int v,bool visited[],int color[])
 
 int main()
 {
-    int V;
-    Graph g(6);
-    g.addEdge(1, 2); 
-	g.addEdge(2, 3); 
-	g.addEdge(3, 4); 
-	g.addEdge(4, 5); 
-	g.addEdge(5, 6); 
-	g.addEdge(6, 1);
-	bool *visited=new bool[V];
-	visited[1]=true;
-	int *color=new int[V];
-	color[1] = 0; 
-	if(g.bipartite(1,visited,color)
-	{
-	    cout << "Graph is bipartite\n": 
-        }
-        else
-        {
-            cout << "Graph is not bipartite\n"; 
-
-        }
+    //int V=4;
+    int G[][V]={{0,1,0,1},
+        {1,0,1,0},{0,1,0,1},{1,0,1,0}
+    };
+    bipartite(G,0)?std::cout << "Yes":cout << "no";
+    
+        
 }
