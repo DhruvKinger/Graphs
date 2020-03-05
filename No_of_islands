@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+# define ROW 5
+# define COL 5
+
+int issafe(bool visited[][COL],int M[][COL],int row,int col)
+{
+    return (row>=0) &&(row<ROW) &&(col>=0) &&(col<COL) && M[row][col] &&!visited[row][col];
+}
+void dfs(bool visited[][COL],int M[][COL],int row,int col)
+{
+    static int rwno[]={ -1, -1, -1, 0, 0, 1, 1, 1 };
+    static int colno[]={-1, 0, 1, -1, 1, -1, 0, 1 };
+    
+    visited[row][col]=true;
+    
+    for(int k=0;k<8;k++)
+    {
+        if(issafe(visited,M,row+rwno[k],col+colno[k]))
+         dfs(visited,M,row+rwno[k],col+colno[k]);
+    }
+}
+
+int cal_islands(int M[][COL])
+{
+    bool visited[ROW][COL];
+    memset(visited,0,sizeof(visited));
+    
+    int c=0;
+    for(int i=0;i<ROW;i++)
+    {
+        for(int j=0;j<COL;j++)
+        {
+            if(M[i][j] && !visited[i][j])
+            {
+                dfs(visited,M,i,j);
+                 c++;
+            }
+           
+        }
+    }
+    return c;
+}
+
+int main()
+{
+    int M[][COL]={
+        { 1, 1, 0, 0, 0 }, 
+        { 0, 1, 0, 0, 1 }, 
+        { 1, 0, 0, 1, 1 }, 
+        { 0, 0, 0, 0, 0 }, 
+        { 1, 0, 1, 0, 1 }
+    };
+    
+    std::cout <<"number of islands are:"<<cal_islands(M) << std::endl;
+    return 0;
+}
