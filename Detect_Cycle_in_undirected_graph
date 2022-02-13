@@ -39,6 +39,9 @@ void Graph::addEdge(int u,int v)
            else if(*itr!=parent)
            {
                return true;
+                  // If an adjacent vertex is visited and
+                  // is not parent of current vertex,
+                  // then there exists a cycle in the graph.
            }
        }
        return false;
