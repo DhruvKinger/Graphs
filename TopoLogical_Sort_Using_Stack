@@ -1,0 +1,82 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Graph{
+    int V;
+    list<int>*adj;
+   
+    public:
+    Graph(int V);
+    void addEdge(int u,int v);
+    void topological_sort();
+    void topological_util_funcn(bool visited[],int v,stack<int>& s);
+    
+};
+
+void Graph::addEdge(int u,int v)
+{
+    adj[u].push_back(v);
+}
+
+Graph::Graph(int V)
+{
+    this->V=V;
+    adj=new list<int>[V];
+}
+
+void Graph::topological_sort()
+{
+    std::stack<int>s ;
+    bool *visited=new bool[V];
+    
+    for(int i=0;i<V;i++)
+    {
+        visited[i]=false;
+    }
+    
+    
+    for(int j=0;j<V;j++)
+    {
+        if(visited[j]==false)
+        {
+            topological_util_funcn(visited,j,s);
+        }
+    }
+    
+    
+    while(!s.empty())
+    {
+        std::cout << s.top() <<" ";
+        s.pop();
+    }
+    
+}
+
+void Graph::topological_util_funcn(bool visited[],int v,stack<int>& s)
+{
+    visited[v]=true;
+    
+    for(auto i:adj[v]){
+        if(!visited[i])
+        {
+            topological_util_funcn(visited,i,s);
+        }
+    }
+    
+    s.push(v);
+    
+}
+
+int main()
+{
+    
+    Graph g(6);
+    g.addEdge(5, 2);
+    g.addEdge(5, 0);
+    g.addEdge(4, 0);
+    g.addEdge(4, 1);
+    g.addEdge(2, 3);
+    g.addEdge(3, 1);
+    g.topological_sort();
+    return 0;
+}
