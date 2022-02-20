@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+using namespace std;
+class Graph{
+    int V;
+    list<int> *adj;
+    public:
+    Graph(int V);
+    void addEdge(int u,int v);
+    void calculate_out_in_degrees();
+};
+
+Graph::Graph(int V)
+{
+    this->V=V;
+    adj=new list<int>[V];
+}
+
+void Graph::addEdge(int u,int v)
+{
+    adj[u].push_back(v);
+}
+
+void Graph::calculate_out_in_degrees(){
+    
+    std::vector<int> in_deg(V,0);
+    std::vector<int> Out_deg(V,0);
+    
+ for(int i=0;i<V;i++)
+  {
+      
+   Out_deg[i]=adj[i].size();
+   for(auto itr:adj[i])
+   {
+    in_deg[itr]++;
+   }
+  }
+
+    
+    cout << "Vertex\t\tIn\t\tOut" << endl;
+    for(int k = 0; k < V; k++)
+    {
+        cout << k << "\t\t"
+             << in_deg[k] << "\t\t"
+             << Out_deg[k] << endl;
+    }
+}
+
+
+int main()
+{
+  Graph g(6); 
+    g.addEdge(5, 2); 
+    g.addEdge(5, 0); 
+    g.addEdge(4, 0); 
+    g.addEdge(4, 1); 
+    g.addEdge(2, 3); 
+    g.addEdge(3, 1);
+   g.calculate_out_in_degrees();
+ 
+   return 0;
+}
